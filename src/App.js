@@ -1,10 +1,15 @@
 import React from 'react';
-import './App.scss';
+
+import AppHeader from './components/AppHeader';
+import AppContainer from './components/AppContainer';
+
+import './scss/App.scss';
 
 function App() {
   return (
-    <div className="App">
-      React App
+    <div className="app">
+      <AppHeader/>
+      <AppContainer/>
     </div>
   );
 }
