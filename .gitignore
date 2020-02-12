@@ -5,6 +5,11 @@
 
 # testing
 /coverage
+/uploaded
+
+# file extensions
+*.jpg
+*.txt
 
 # production
 /build
