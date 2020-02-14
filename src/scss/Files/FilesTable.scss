@@ -1,0 +1,34 @@
+.files-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 100%;
+
+    .table-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-size: 36px;
+        background: #3D8EBB;
+        color: #ffffff;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: 20px 0;
+    }
+
+    .table-col-names {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        height: 100%;
+        font-size: 18px;
+        font-weight: 700;
+        background: #DAD9FB;
+        padding: 15px 0;
+    }
+}

@@ -2,10 +2,14 @@ import React from 'react';
 
 import '../scss/AppContainer.scss';
 
+import FilesContainer from './Files/FilesContainer';
+import UploadContainer from './Upload/UploadContainer'
+
 function AppContainer() {
   return (
     <div className="app-container">
-      App Container
+      <FilesContainer/>
+      <UploadContainer/>
     </div>
   )
 }
