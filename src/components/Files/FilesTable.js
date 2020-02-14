@@ -2,6 +2,8 @@ import React from 'react';
 
 import '../../scss/Files/FilesTable.scss';
 
+import TableRow from './TableRow';
+
 function FilesTable () {
   return (
     <div className="files-table">
@@ -13,7 +15,10 @@ function FilesTable () {
         <span>Preview</span>
         <span>Type</span>
         <span>Size</span>
-      </div>  
+      </div>
+      <div className="table-row-data">
+        <TableRow/>
+      </div>
     </div>
   )
 }
