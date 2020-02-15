@@ -32,7 +32,7 @@ function UploadForm() {
                 <AiOutlineUpload 
                   className="upload-icon">
                 </AiOutlineUpload>
-                Drop files here or click to select
+                Drop/Click to add files
               </div>
           }
         </div>
