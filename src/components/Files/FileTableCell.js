@@ -1,8 +1,8 @@
 import React from 'react';
 
-function TableRow () {
+function FileTableCell () {
   return (
-    <div className="table-row">
+    <div className="table-cell">
       <div className="file-name">
         Example.txt
       </div>
@@ -19,4 +19,4 @@ function TableRow () {
   )
 }
 
-export default TableRow;
+export default FileTableCell;

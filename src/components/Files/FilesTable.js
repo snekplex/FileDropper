@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../scss/Files/FilesTable.scss';
 
-import TableRow from './TableRow';
+import FileTableCell from './FileTableCell';
 
 function FilesTable () {
   return (
@@ -17,7 +17,8 @@ function FilesTable () {
         <span>Size</span>
       </div>
       <div className="table-row-data">
-        <TableRow/>
+        <FileTableCell/>
+        <FileTableCell/>
       </div>
     </div>
   )
