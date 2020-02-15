@@ -18,7 +18,6 @@ function FilesTable () {
       </div>
       <div className="table-row-data">
         <FileTableCell/>
-        <FileTableCell/>
       </div>
     </div>
   )
