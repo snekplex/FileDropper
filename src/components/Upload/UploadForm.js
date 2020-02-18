@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { useDropzone } from 'react-dropzone';
 import { Line } from 'rc-progress';
@@ -9,10 +9,17 @@ import FormTableCell from './FormTableCell';
 
 function UploadForm() {
   const onDrop = useCallback(acceptedFiles => {
+    setFiles(acceptedFiles);
     console.log(acceptedFiles);
   }, []);
 
+  const [ isUploading, setUploading ] = useState(false);
+  const [ files, setFiles ] = useState([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
+
+  const onUploadClick = () => {
+    setUploading(true);
+  };
 
   return (
     <div className="upload-form">
@@ -36,13 +43,20 @@ function UploadForm() {
               </div>
           }
         </div>
-        <span className="progress-bar-title">Uploading...</span>
-        <Line 
-          className="progress-bar"
-          percent="20"
-          strokeWidth="4"
-          trailWidth="4">
-        </Line>
+        {
+          isUploading ?
+          <div className="upload-bar-div">
+            <span className="progress-bar-title">Uploading...</span>
+            <Line 
+              className="progress-bar"
+              percent="20"
+              strokeWidth="4"
+              trailWidth="4">
+            </Line>
+          </div>
+          :
+          <span></span>
+        }
         <div className="form-table">
           <div className="form-table-header">
             <span>Name</span>
@@ -57,7 +71,7 @@ function UploadForm() {
         </div>
       </div>
       <div className="form-footer">
-        <button className="form-footer-btn upload-btn">Upload</button>
+        <button className="form-footer-btn upload-btn" onClick={onUploadClick}>Upload</button>
         <button className="form-footer-btn clear-btn">Clear</button>
       </div>
     </div>
