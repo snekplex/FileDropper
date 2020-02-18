@@ -1,24 +1,27 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { useDropzone } from 'react-dropzone';
 import { Line } from 'rc-progress';
 
 import '../../scss/Upload/UploadForms.scss';
 
+import * as fileService from '../../services/file/file';
 import FormTableCell from './FormTableCell';
 
 function UploadForm() {
   const onDrop = useCallback(acceptedFiles => {
     setFiles(acceptedFiles);
-    console.log(acceptedFiles);
   }, []);
 
   const [ isUploading, setUploading ] = useState(false);
+
+  const [ uploadPercent, setUploadPercent ] = useState('0');
   const [ files, setFiles ] = useState([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
 
-  const onUploadClick = () => {
+  const onUploadClick = async () => {
     setUploading(true);
+    const data = await fileService.uploadFiles(files);
   };
 
   return (
@@ -49,7 +52,7 @@ function UploadForm() {
             <span className="progress-bar-title">Uploading...</span>
             <Line 
               className="progress-bar"
-              percent="20"
+              percent={`${uploadPercent}`}
               strokeWidth="4"
               trailWidth="4">
             </Line>

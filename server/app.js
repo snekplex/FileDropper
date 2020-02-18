@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 const HOST = 'localhost';
@@ -13,6 +14,7 @@ const uploadedFilesPath = path.join(__dirname, 'uploaded');
 app.use(express.static(staticFilesPath));
 app.use(express.static(uploadedFilesPath));
 app.use(fileUpload());
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.json({
@@ -21,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
+  console.log(req.files);
   if (!req.files || Object.keys(req.files).length === 0) {
     res.json({
       'filesUploaded': false
@@ -29,7 +32,19 @@ app.post('/upload', (req, res) => {
     const uploadedFiles = req.files;
     var file;
 
-    for (file of uploadedFiles.files) {
+    if (uploadedFiles.files.length > 1) {
+      for (file of uploadedFiles.files) {
+        fs.writeFile(uploadedFilesPath + '\\' + file.name, file.data, (err) => {
+          if (err) {
+            res.json({
+              'error': 'Error saving file',
+              'filesUploaded': false
+            });
+          }
+        });
+      }
+    } else {
+      const file = uploadedFiles.files;
       fs.writeFile(uploadedFilesPath + '\\' + file.name, file.data, (err) => {
         if (err) {
           res.json({
