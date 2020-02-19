@@ -24,6 +24,30 @@ function UploadForm() {
     const data = await fileService.uploadFiles(files);
   };
 
+  const FormTableCells = ({files}) => {
+    if (files) {
+      return (
+        <div className="form-table-data" key>
+          {
+            files.map(file => (
+              <FormTableCell
+                key={file.name}
+                file={file}
+                name={file.name}
+                type={file.type}
+                size={file.size}
+              />
+            ))
+          }
+        </div>
+      )
+    } else {
+      return (
+        <div className="form-table-data"></div>
+      )
+    }
+  }
+
   return (
     <div className="upload-form">
       <div className="form-header">
@@ -67,10 +91,9 @@ function UploadForm() {
             <span>Type</span>
             <span>Size</span>
           </div>
-          <div className="form-table-data">
-            <FormTableCell/>
-            <FormTableCell/>
-          </div>
+          <FormTableCells
+            files={files}
+          />
         </div>
       </div>
       <div className="form-footer">
