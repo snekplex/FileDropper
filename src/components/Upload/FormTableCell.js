@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function FormTableCell(props) {
 
-  const [cellImg, setCellImg] = useState([]);
-
   const CellFilePreview = ({file, fileType}) => {
-    if (fileType.includes('image')) {
+    const [cellImg, setCellImg] = useState([]);
+    useEffect(() => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = (e) => {
         setCellImg(reader.result);
       };
+
+      return function close() {
+        reader.abort();
+      };
+    });
+    if (fileType.includes('image')) {
       return (
         <div className="cell-file-preview">
           <img className="cell-file-img" src={cellImg} alt="Cell file preview"/>
