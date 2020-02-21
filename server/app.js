@@ -3,14 +3,19 @@ const path = require('path');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser')
+
+const config = require('./config/config');
+const FileModel = require('./database/schemas/File');
 
 const app = express();
-const HOST = 'localhost';
-const PORT = 3001;
+const dbUrl = config.MONGO_HOST + config.MONGO_DATABASE;
 
 const staticFilesPath = path.join(__dirname, 'public');
 const uploadedFilesPath = path.join(__dirname, 'uploaded');
 
+app.use(bodyParser.json());
 app.use(express.static(staticFilesPath));
 app.use(express.static(uploadedFilesPath));
 app.use(fileUpload());
@@ -23,7 +28,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
-  console.log(req.files);
   if (!req.files || Object.keys(req.files).length === 0) {
     res.json({
       'filesUploaded': false
@@ -51,6 +55,24 @@ app.post('/upload', (req, res) => {
             'error': 'Error saving file',
             'filesUploaded': false
           });
+        } else {
+          var fileSource = 'http://' + config.SERVER_HOST + ':' + config.SERVER_PORT + '/' + file.name;
+          if (config.NODE_ENV !== 'development') {
+            // Change the stored URL as needed
+            fileSource = 'http://' + config.SERVER_HOST + '/' + file.name;
+          }
+          const fileObj = new FileModel({
+            fileName: file.name,
+            fileSource: fileSource,
+            fileType: file.mimetype,
+            fileSize: file.size,
+            fileHash: file.md5
+          });
+          fileObj.save((err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
         }
       });
     }
@@ -61,10 +83,49 @@ app.post('/upload', (req, res) => {
   }
 });
 
+
 app.get('/get-files', (req, res) => {
-  res.json({
-    'message': 'Return files'
+  FileModel.find({}, (err, files) => {
+    if (err) {
+      res.json({ 'error': 'Error finding files' });
+    };
+
+    var fileMap = {};
+
+    files.forEach((file) => {
+      fileMap[file._id] = file;
+    });
+    res.json({ 'files': fileMap });
   });
 });
 
-app.listen(PORT, HOST, () => console.log(`Running on http://${HOST}:${PORT}`));
+
+app.get('/send-files', (req, res) => {
+  res.sendFile(__dirname + `/uploaded/${req.body.imgName}`);
+});
+
+
+
+app.listen(config.SERVER_PORT, config.SERVER_PORT, async (err) => {
+  if (err) {
+    console.log(err);
+  }
+
+  try {
+
+    await mongoose.connect(dbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, (err) => {
+      if (err) {
+        console.log(`Error connecting to mongodb. ERROR: ${err.message}`);
+      } else {
+        console.log('Connected to mongodb.');
+      }
+    });
+    console.log(`Running on http://${config.SERVER_HOST}:${config.SERVER_PORT}`);
+
+  } catch (err) {
+    console.log(err);
+  }
+});
