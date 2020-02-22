@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import config from '../../config/config';
+
+const backendUrlBase = config.BACKEND_HTTP_TYPE + config.BACKEND_HOST + ':' + config.BACKEND_PORT;
 
 export const uploadFiles = (files) => {
   const formData = new FormData();
@@ -8,7 +11,7 @@ export const uploadFiles = (files) => {
   } else {
     formData.append('files', files[0]);
   }
-  const data = axios.post('http://localhost:3001/upload', formData, {
+  const data = axios.post(backendUrlBase + '/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -23,7 +26,7 @@ export const uploadFiles = (files) => {
 };
 
 export const getFileData = () => {
-  const data = axios.get('http://localhost:3001/get-files')
+  const data = axios.get(backendUrlBase + '/get-files')
     .then((res) => {
       return res;
     }).catch((err) => {

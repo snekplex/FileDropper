@@ -25,6 +25,7 @@ function UploadForm(props) {
     if (data.data.filesUploaded === true) {
       props.setUploaded(true);
       setUploading(false);
+      setFiles([]);
     } else {
       props.setUploaded(false);
       setUploading(false);
