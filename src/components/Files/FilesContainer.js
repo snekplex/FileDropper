@@ -5,11 +5,14 @@ import '../../scss/Files/FilesContainer.scss';
 import FileSearch from './FileSearch';
 import FilesTable from './FilesTable';
 
-function FilesContainer () {
+function FilesContainer (props) {
   return (
     <div className="files-container">
       <FileSearch/>
-      <FilesTable/>
+      <FilesTable
+        filesUploaded={props.filesUploaded}
+        setFilesUploaded={props.setFilesUploaded}
+      />
     </div>
   )
 }

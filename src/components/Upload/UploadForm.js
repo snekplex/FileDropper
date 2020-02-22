@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { useDropzone } from 'react-dropzone';
 import { Line } from 'rc-progress';
@@ -8,7 +8,7 @@ import '../../scss/Upload/UploadForms.scss';
 import * as fileService from '../../services/file/file';
 import FormTableCell from './FormTableCell';
 
-function UploadForm() {
+function UploadForm(props) {
   const onDrop = useCallback(acceptedFiles => {
     setFiles(acceptedFiles);
   }, []);
@@ -19,15 +19,22 @@ function UploadForm() {
   const [ files, setFiles ] = useState([]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
 
-  const onUploadClick = async () => {
+  const onUploadClick = async (props) => {
     setUploading(true);
     const data = await fileService.uploadFiles(files);
+    if (data.data.filesUploaded === true) {
+      props.setUploaded(true);
+      setUploading(false);
+    } else {
+      props.setUploaded(false);
+      setUploading(false);
+    }
   };
 
   const FormTableCells = ({files}) => {
     if (files) {
       return (
-        <div className="form-table-data" key>
+        <div className="form-table-data">
           {
             files.map(file => (
               <FormTableCell
@@ -97,8 +104,8 @@ function UploadForm() {
         </div>
       </div>
       <div className="form-footer">
-        <button className="form-footer-btn upload-btn" onClick={onUploadClick}>Upload</button>
-        <button className="form-footer-btn clear-btn">Clear</button>
+        <button className="form-footer-btn upload-btn" onClick={() => onUploadClick(props)}>Upload</button>
+        <button className="form-footer-btn clear-btn" onClick={() => setFiles([])}>Clear</button>
       </div>
     </div>
   )

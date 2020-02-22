@@ -21,3 +21,14 @@ export const uploadFiles = (files) => {
 
   return data;
 };
+
+export const getFileData = () => {
+  const data = axios.get('http://localhost:3001/get-files')
+    .then((res) => {
+      return res;
+    }).catch((err) => {
+      console.log(err);
+    });
+
+  return data;
+};

@@ -11,7 +11,7 @@ function FormTableCell(props) {
         setCellImg(reader.result);
       };
 
-      return function close() {
+      return function cleanup() {
         reader.abort();
       };
     });

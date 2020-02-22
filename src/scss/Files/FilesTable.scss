@@ -36,12 +36,23 @@
         margin-bottom: 20px;
     }
 
+    .table-rows {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 517px;
+
+    }
+
     .table-row-data {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
         height: 517px;
+        overflow-x: hidden;
+        overflow-y: scroll;
 
         .table-cell {
             display: flex;
@@ -64,6 +75,12 @@
                 text-align: center;
                 width: 125px;
                 height: 100%;
+
+                .file-img {
+                    border-radius: 10px;
+                    width: 140px;
+                    height: 90px;
+                }
             }
         }
     }

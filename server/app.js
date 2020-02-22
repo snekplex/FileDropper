@@ -90,12 +90,12 @@ app.get('/get-files', (req, res) => {
       res.json({ 'error': 'Error finding files' });
     };
 
-    var fileMap = {};
+    var fileArray = [];
 
     files.forEach((file) => {
-      fileMap[file._id] = file;
+      fileArray.push(file);
     });
-    res.json({ 'files': fileMap });
+    res.json({ 'files': fileArray });
   });
 });
 

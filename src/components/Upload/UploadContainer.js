@@ -4,10 +4,12 @@ import '../../scss/Upload/UploadContainer.scss';
 
 import UploadForm from './UploadForm';
 
-function UploadContainer () {
+function UploadContainer (props) {
   return (
     <div className="upload-container">
-      <UploadForm/>
+      <UploadForm
+        setUploaded={props.setFilesUploaded}
+      />
     </div>
   )
 }
