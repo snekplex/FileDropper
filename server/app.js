@@ -21,6 +21,7 @@ app.use(express.static(uploadedFilesPath));
 app.use(fileUpload());
 app.use(cors());
 
+
 app.get('/', (req, res) => {
   res.json({
     'message': 'Express server live'
@@ -46,6 +47,7 @@ app.post('/upload', (req, res) => {
             });
           }
         });
+        FileModel.saveFileObj(file);
       }
     } else {
       const file = uploadedFiles.files;
@@ -56,23 +58,7 @@ app.post('/upload', (req, res) => {
             'filesUploaded': false
           });
         } else {
-          var fileSource = 'http://' + config.SERVER_HOST + ':' + config.SERVER_PORT + '/' + file.name;
-          if (config.NODE_ENV !== 'development') {
-            // Change the stored URL as needed
-            fileSource = 'http://' + config.SERVER_HOST + '/' + file.name;
-          }
-          const fileObj = new FileModel({
-            fileName: file.name,
-            fileSource: fileSource,
-            fileType: file.mimetype,
-            fileSize: file.size,
-            fileHash: file.md5
-          });
-          fileObj.save((err) => {
-            if (err) {
-              console.log(err);
-            }
-          });
+          FileModel.saveFileObj(file);
         }
       });
     }
@@ -85,7 +71,7 @@ app.post('/upload', (req, res) => {
 
 
 app.get('/get-files', (req, res) => {
-  FileModel.find({}, (err, files) => {
+  FileModel.FileModel.find({}, (err, files) => {
     if (err) {
       res.json({ 'error': 'Error finding files' });
     };
