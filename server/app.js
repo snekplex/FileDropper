@@ -4,7 +4,8 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const compression = require('compression');
 
 const config = require('./config/config');
 const FileModel = require('./database/schemas/File');
@@ -20,6 +21,7 @@ app.use(express.static(staticFilesPath));
 app.use(express.static(uploadedFilesPath));
 app.use(fileUpload());
 app.use(cors());
+app.use(compression());
 
 
 app.get('/', (req, res) => {
@@ -86,8 +88,40 @@ app.get('/get-files', (req, res) => {
 });
 
 
-app.get('/send-files', (req, res) => {
-  res.sendFile(__dirname + `/uploaded/${req.body.imgName}`);
+app.get('/download/:fileName', (req, res) => {
+  FileModel.FileModel.findOne({fileName: req.params.fileName}, (err, file) => {
+    if (err) {
+      res.json({
+        'fileDownloaded': false
+      });
+    }
+    if (file) {
+      res.download(__dirname + `/uploaded/${req.params.fileName}`, req.params.fileName);
+    }
+  });
+});
+
+app.delete('/delete', (req, res) => {
+  const fileId = req.body.fileId;
+  FileModel.FileModel.findById(fileId, (err, file) => {
+      const response = {
+        fileDeleted: false,
+        fileDataDeleted: false
+      };
+      fs.unlink(__dirname + `/uploaded/${file.fileName}`, (err) => {
+        if (err) {
+          response.fileDeleted = false;
+        }
+        response.fileDeleted = true;
+      });
+      file.remove((err) => {
+        if (err) {
+          response.fileDataDeleted = false;
+        }
+        response.fileDataDeleted = true;
+      });
+      res.json(response);
+  });
 });
 
 

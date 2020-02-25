@@ -36,6 +36,7 @@ function FilesTable (props) {
             apiFiles.map((file) => (
               <FileTableCell
                 key={file._id}
+                id={file._id}
                 name={file.fileName}
                 source={file.fileSource}
                 type={file.fileType}
