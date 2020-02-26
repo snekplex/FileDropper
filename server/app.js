@@ -75,7 +75,9 @@ app.post('/upload', (req, res) => {
 app.get('/get-files', (req, res) => {
   FileModel.FileModel.find({}, (err, files) => {
     if (err) {
-      res.json({ 'error': 'Error finding files' });
+      res.json({
+        'error': 'Error finding files'
+      });
     };
 
     var fileArray = [];
@@ -83,13 +85,17 @@ app.get('/get-files', (req, res) => {
     files.forEach((file) => {
       fileArray.push(file);
     });
-    res.json({ 'files': fileArray });
+    res.json({
+      'files': fileArray
+    });
   });
 });
 
 
 app.get('/download/:fileName', (req, res) => {
-  FileModel.FileModel.findOne({fileName: req.params.fileName}, (err, file) => {
+  FileModel.FileModel.findOne({
+    fileName: req.params.fileName
+  }, (err, file) => {
     if (err) {
       res.json({
         'fileDownloaded': false
@@ -101,26 +107,32 @@ app.get('/download/:fileName', (req, res) => {
   });
 });
 
-app.delete('/delete', (req, res) => {
+app.delete('/delete', async (req, res) => {
   const fileId = req.body.fileId;
+  var response = {
+    fileDeleted: false,
+    fileDataDeleted: false
+  };
   FileModel.FileModel.findById(fileId, (err, file) => {
-      const response = {
-        fileDeleted: false,
-        fileDataDeleted: false
-      };
+    if (err || !file) {
+      res.json(response);
+    } else {
       fs.unlink(__dirname + `/uploaded/${file.fileName}`, (err) => {
         if (err) {
-          response.fileDeleted = false;
+          res.json(response);
+        } else {
+          response.fileDeleted = true;
         }
-        response.fileDeleted = true;
       });
       file.remove((err) => {
         if (err) {
-          response.fileDataDeleted = false;
+          res.json(response);
+        } else {
+          response.fileDataDeleted = true;
+          res.json(response);
         }
-        response.fileDataDeleted = true;
       });
-      res.json(response);
+    }
   });
 });
 

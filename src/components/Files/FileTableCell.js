@@ -6,14 +6,17 @@ function FileTableCell (props) {
   const [expanded, setExpanded] = useState(false);
 
   const onDownloadClick = async (fileName, fileType) => {
-    const data = await fileService.downloadFile(fileName, fileType); 
+    const data = await fileService.downloadFile(fileName, fileType);
   };
 
   const onDeleteClick = async (fileId) => {
     const data = await fileService.deleteFile(fileId);
-    if (!data.data.fileDeleted) {
-      window.alert('Error deleting file from database');
-    };
+    if (!data.data.fileDeleted || !data.data.fileDataDeleted) {
+      window.alert('Error removing file from database');
+    }
+    if (data.data.fileDeleted && data.data.fileDataDeleted) {
+      props.updateFiles(true);
+    }
   };
 
   const FilePreview = ({fileSource, fileType}) => {

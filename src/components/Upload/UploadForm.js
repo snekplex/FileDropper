@@ -22,7 +22,7 @@ function UploadForm(props) {
   const onUploadClick = async (props) => {
     setUploading(true);
     const data = await fileService.uploadFiles(files);
-    if (data.data.filesUploaded === true) {
+    if (data && data.data.filesUploaded === true) {
       props.setUploaded(true);
       setUploading(false);
       setFiles([]);

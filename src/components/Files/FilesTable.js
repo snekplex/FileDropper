@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loader from 'react-loader-spinner';
 
 import '../../scss/Files/FilesTable.scss';
 
@@ -7,12 +8,17 @@ import * as fileService from '../../services/file/file';
 import FileTableCell from './FileTableCell';
 
 function FilesTable (props) {
-  const [apiFiles, setaApiFiles] = useState([]);
+  const [loadingFiles, setLoadingFiles] = useState(false);
+  const [apiFiles, setApiFiles] = useState([]);
   useEffect(() => {
 
     async function fetchData() {
+      setLoadingFiles(true);
       const data = await fileService.getFileData();
-      setaApiFiles(data.data);
+      if (data) {
+        setApiFiles(data.data);
+        setLoadingFiles(false);
+      }
     }
 
     fetchData();
@@ -27,9 +33,22 @@ function FilesTable (props) {
     };
 
   }, [props]);
+  
 
   const FileTableCells = ({apiFiles}) => {
-    if (apiFiles) {
+    if (loadingFiles) {
+      return (
+        <div className="table-row-data loading">
+          <Loader
+            type="TailSpin"
+            color="#ffffff"
+            width={250}
+            height={250}
+            timeout={10000}
+          ></Loader>
+        </div>
+      )
+    } else if (apiFiles && !loadingFiles) {
       return (
         <div className="table-row-data">
           {
@@ -41,6 +60,7 @@ function FilesTable (props) {
                 source={file.fileSource}
                 type={file.fileType}
                 size={file.fileSize}
+                updateFiles={props.setFilesUploaded}
               />
             ))
           }
