@@ -5,7 +5,7 @@ import config from '../../config/config';
 
 const backendUrlBase = config.BACKEND_HTTP_TYPE + config.BACKEND_HOST + ':' + config.BACKEND_PORT;
 
-export const uploadFiles = (files) => {
+export const uploadFiles = (files, setLoadPercent) => {
   const formData = new FormData();
   if (files.length > 1) {
     var file;
@@ -18,6 +18,12 @@ export const uploadFiles = (files) => {
   const data = axios.post(backendUrlBase + '/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
+      },
+      onUploadProgress: (progressEvent) => {
+        const loaded = progressEvent.loaded;
+        const uploadTotal = progressEvent.total;
+        const percent = Math.trunc((Math.floor(loaded/uploadTotal*1000)/10)).toString();
+        setLoadPercent(percent);
       }
     })
     .then((res) => {
