@@ -1,42 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Loader from 'react-loader-spinner';
 
 import '../../scss/Files/FilesTable.scss';
 
-import * as fileService from '../../services/file/file';
-
 import FileTableCell from './FileTableCell';
 
 function FilesTable (props) {
-  const [loadingFiles, setLoadingFiles] = useState(false);
-  const [apiFiles, setApiFiles] = useState([]);
-  useEffect(() => {
-
-    async function fetchData() {
-      setLoadingFiles(true);
-      const data = await fileService.getFileData();
-      if (data) {
-        setApiFiles(data.data);
-        setLoadingFiles(false);
-      }
-    }
-
-    fetchData();
-
-    if (props.filesUploaded) {
-      fetchData();
-      props.setFilesUploaded(false);
-    }
-
-    return function cleanup() {
-
-    };
-
-  }, [props]);
-  
-
-  const FileTableCells = ({apiFiles}) => {
-    if (loadingFiles) {
+  const FileTableCells = ({files, loading}) => {
+    if (loading) {
       return (
         <div className="table-row-data loading">
           <Loader
@@ -48,11 +19,11 @@ function FilesTable (props) {
           ></Loader>
         </div>
       )
-    } else if (apiFiles && !loadingFiles) {
+    } else if (files) {
       return (
         <div className="table-row-data">
           {
-            apiFiles.map((file) => (
+            files.map((file) => (
               <FileTableCell
                 key={file._id}
                 id={file._id}
@@ -68,7 +39,9 @@ function FilesTable (props) {
       )
     } else {
       return (
-        <div className="table-row-data"></div>
+        <div className="table-row-data">
+          Error Loading Files
+        </div>
       )
     }
   };
@@ -86,7 +59,8 @@ function FilesTable (props) {
       </div>
       <div className="table-rows">
         <FileTableCells
-          apiFiles={apiFiles.files}
+          files={props.files}
+          loading={props.loadingFiles}
         />
       </div>
     </div>
