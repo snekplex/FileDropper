@@ -115,22 +115,23 @@ app.delete('/delete', async (req, res) => {
   };
   FileModel.FileModel.findById(fileId, (err, file) => {
     if (err || !file) {
+      console.log(err);
       res.json(response);
     } else {
       fs.unlink(__dirname + `/uploaded/${file.fileName}`, (err) => {
         if (err) {
-          res.json(response);
+          console.log(err);
         } else {
           response.fileDeleted = true;
         }
       });
       file.remove((err) => {
         if (err) {
-          res.json(response);
+          console.log(err);
         } else {
           response.fileDataDeleted = true;
-          res.json(response);
         }
+        res.json(response);
       });
     }
   });
