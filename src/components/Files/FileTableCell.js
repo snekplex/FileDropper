@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AiFillFileText } from 'react-icons/ai';
 
 import * as fileService from '../../services/file/file';
 
@@ -41,7 +42,9 @@ function FileTableCell (props) {
     } else {
       return (
         <div className="file-preview">
-          Not Image
+          <AiFillFileText
+            className="file-img"
+          ></AiFillFileText>
         </div>
       )
     }

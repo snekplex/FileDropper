@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AiFillFileText } from 'react-icons/ai';
 
 function FormTableCell(props) {
 
@@ -36,7 +37,9 @@ function FormTableCell(props) {
     } else {
       return (
         <div className="cell-file-preview">
-          Not Image
+          <AiFillFileText
+            className="cell-file-img"
+          ></AiFillFileText>
         </div>
       )
     }
