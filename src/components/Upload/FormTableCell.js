@@ -2,6 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 function FormTableCell(props) {
 
+  const CellFileName = ({fileName}) => {
+    if (fileName.length >= 15) {
+      fileName = fileName.substring(0, 10) + '...';
+    };
+
+    return (
+      <div className="cell-file-name">
+        {fileName}
+      </div>
+    )
+  };
+
   const CellFilePreview = ({file, fileType}) => {
     const [cellImg, setCellImg] = useState([]);
     useEffect(() => {
@@ -49,20 +61,27 @@ function FormTableCell(props) {
           {(fileSize / 1000).toFixed(2)} KB
         </div>
       )
+    } else if (fileSize <= 999) {
+      return (
+        <div className="cell-file-size">
+          {fileSize} B
+        </div>
+      )
     } else {
       return (
         <div className="cell-file-size">
-          Error
+          NA
         </div>
       )
     }
   }
 
+
   return (
     <div className="form-table-cell">
-      <div className="cell-file-name">
-        {props.name}
-      </div>
+      <CellFileName
+        fileName={props.name}
+      />
       <CellFilePreview
         file={props.file}
         fileType={props.type}

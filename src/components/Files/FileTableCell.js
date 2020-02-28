@@ -19,6 +19,18 @@ function FileTableCell (props) {
     }
   };
 
+  const FileName = ({fileName}) => {
+    if (fileName.length >= 15) {
+      fileName = fileName.substring(0, 10) + '...';
+    };
+
+    return (
+      <div className="file-name">
+        {fileName}
+      </div>
+    )
+  };
+
   const FilePreview = ({fileSource, fileType}) => {
     if (fileType.includes('image')) {
       return (
@@ -54,10 +66,16 @@ function FileTableCell (props) {
           {(fileSize / 1000).toFixed(2)} KB
         </div>
       )
+    } else if (fileSize <= 999) {
+      return (
+        <div className="file-size">
+          {fileSize} B
+        </div>
+      )
     } else {
       return (
         <div className="file-size">
-          Error
+          NA
         </div>
       )
     }
@@ -102,9 +120,9 @@ function FileTableCell (props) {
   } else {
     return (
       <div className="table-cell" onClick={() => setExpanded(true)}>
-        <div className="file-name">
-          {props.name}
-        </div>
+        <FileName
+          fileName={props.name}
+        />
         <FilePreview
           fileSource={props.source}
           fileType={props.type}

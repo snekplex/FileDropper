@@ -9,14 +9,15 @@ import * as fileService from '../../services/file/file';
 import FormTableCell from './FormTableCell';
 
 function UploadForm(props) {
-  const onDrop = useCallback(acceptedFiles => {
-    setFiles(acceptedFiles);
-  }, []);
-
   const [ isUploading, setUploading ] = useState(false);
-
   const [ uploadPercent, setUploadPercent ] = useState('0');
   const [ files, setFiles ] = useState([]);
+
+  const onDrop = useCallback(acceptedFiles => {
+    const filesToAdd = files.concat(acceptedFiles);
+    setFiles(filesToAdd);
+  }, [files]);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop});
 
   const onUploadClick = async (props) => {
