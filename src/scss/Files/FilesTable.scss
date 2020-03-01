@@ -67,7 +67,7 @@
             background: #ffffff;
             box-shadow: 4px 4px 4px #808080;
             cursor: pointer;
-            
+
             .file-preview {
                 display: flex;
                 align-items: center;
@@ -90,7 +90,11 @@
             cursor: auto;
 
             div {
-                margin: 10px;
+                display: flex;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
             }
 
             .file-name {
@@ -98,7 +102,6 @@
             }
 
             .file-preview {
-                width: 250px;
 
                 .file-img {
                     width: 280px;

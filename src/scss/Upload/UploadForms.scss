@@ -110,15 +110,20 @@
                     padding: 20px 0px;
                     margin-bottom: 20px;
                     background: #EEEEEE;
-                    cursor: pointer;
+
+                    div {
+                        display: flex;
+                        width: 100%;
+                        height: 100%;
+                        align-items: center;
+                        justify-content: center;
+                    }
 
                     .cell-file-preview {
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         text-align: center;
-                        width: 125px;
-                        height: 100%;
 
                         .cell-file-img {
                             display: flex;

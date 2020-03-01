@@ -90,7 +90,7 @@ function FormTableCell(props) {
         fileType={props.type}
       />
       <div className="cell-file-type">
-        {props.type}
+        {props.type ? props.type : 'NA'}
       </div>
       <CellFileSize 
         fileSize={props.size}
