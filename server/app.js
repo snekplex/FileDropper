@@ -38,15 +38,16 @@ app.post('/upload', (req, res) => {
   } else {
     const uploadedFiles = req.files;
     var file;
+    var response = {
+      'filesUploaded': true
+    };
 
     if (uploadedFiles.files.length > 1) {
       for (file of uploadedFiles.files) {
         fs.writeFile(uploadedFilesPath + '\\' + file.name, file.data, (err) => {
           if (err) {
-            res.json({
-              'error': 'Error saving file',
-              'filesUploaded': false
-            });
+            console.log(err);
+            response.filesUploaded = false;
           }
         });
         FileModel.saveFileObj(file);
@@ -55,19 +56,15 @@ app.post('/upload', (req, res) => {
       const file = uploadedFiles.files;
       fs.writeFile(uploadedFilesPath + '\\' + file.name, file.data, (err) => {
         if (err) {
-          res.json({
-            'error': 'Error saving file',
-            'filesUploaded': false
-          });
+          console.log(err);
+          response.filesUploaded = false;
         } else {
           FileModel.saveFileObj(file);
         }
       });
     }
 
-    res.json({
-      'filesUploaded': true
-    });
+    res.json(response);
   }
 });
 
