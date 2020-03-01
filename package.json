@@ -21,15 +21,17 @@
     "react-dropzone": "^10.2.1",
     "react-icons": "^3.9.0",
     "react-loader-spinner": "^3.1.5",
-    "react-scripts": "3.3.1"
+    "react-scripts": "3.3.1",
+    "serve": "^11.3.0"
   },
   "scripts": {
-    "start": "concurrently \"yarn start-serv\" \"yarn start-front-end\"",
-    "start-dev": "concurrently \"yarn start-serv-dev\" \"yarn start-front-end\"",
+    "start": "concurrently \"yarn start-serv\" \"yarn serve-front-end\"",
+    "start-dev": "concurrently \"yarn start-serv-dev\" \"yarn start-front-end-dev\"",
     "start-serv": "node server/app.js",
     "start-serv-dev": "nodemon server/app.js",
-    "start-front-end": "react-scripts start",
-    "build": "react-scripts build",
+    "serve-front-end": "serve -s build",
+    "start-front-end-dev": "react-scripts start",
+    "build-front-end": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

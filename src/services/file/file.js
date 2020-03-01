@@ -49,6 +49,7 @@ export const getFileData = () => {
 export const downloadFile = (fileName, fileType) => {
   var fileSaverSupport = true;
   try {
+    // eslint-disable-next-line
     var isFileSaverSupported = !!new Blob();
   } catch (e) {
     fileSaverSupport = false;

@@ -156,7 +156,7 @@ app.listen(config.SERVER_PORT, config.SERVER_PORT, async (err) => {
         console.log('Connected to mongodb.');
       }
     });
-    console.log(`Running on http://${config.SERVER_HOST}:${config.SERVER_PORT}`);
+    console.log(`Running Express server on http://${config.SERVER_HOST}:${config.SERVER_PORT}`);
 
   } catch (err) {
     console.log(err);

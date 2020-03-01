@@ -7,6 +7,7 @@ function FileTableCell (props) {
   const [expanded, setExpanded] = useState(false);
 
   const onDownloadClick = async (fileName, fileType) => {
+    // eslint-disable-next-line
     const data = await fileService.downloadFile(fileName, fileType);
   };
 

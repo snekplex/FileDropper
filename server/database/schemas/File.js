@@ -29,8 +29,8 @@ const FileSchema = new Schema({
 function saveFileObj(file) {
   var fileSource = 'http://' + config.SERVER_HOST + ':' + config.SERVER_PORT + '/' + file.name;
   if (config.NODE_ENV !== 'development') {
-    // Change the stored URL as needed
-    fileSource = 'http://' + config.SERVER_HOST + '/' + file.name;
+    // Change the URL as needed
+    fileSource = 'http://' + config.SERVER_HOST + ':' + config.SERVER_PORT + '/' + file.name;
   }
   const fileObj = new FileModel({
     fileName: file.name,
